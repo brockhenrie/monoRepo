@@ -1,0 +1,37 @@
+
+<div class="admin-page">
+  <p-toast hideTransitionOptions="100ms" showTransitionOptions="100ms" showTransformOptions="translate(-90%,90%)" hideTransformOptions="translateX(-100%)"></p-toast>
+  <p-card header="Add Categories" subheader="You can add or edit categories here">
+    <div class="grid mb-5">
+      <div class="col-12">
+        <p-toolbar>
+          <div class="p-toolbar-group-left"></div>
+          <div class="p-toolbar-group-right">
+            <p-button  styleClass="p-button-primary mr-2" label="Create" icon="pi pi-plus" (click)=" onCreateCategory()" [disabled]="createCat.invalid"></p-button>
+
+            <p-button styleClass="p-button-secondary " label="Cancel" icon="pi pi-minus"></p-button>
+
+          </div>
+        </p-toolbar>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="col-12">
+        <form [formGroup]="createCat">
+          <div class="formgrid grid">
+            <div class="field col">
+                <label for="name">Name</label>
+                <input id="name" formControlName=name type="text" class="inputfield w-full">
+                <small *ngIf="categoryForm['name'].invalid && categoryForm['name'].touched" class="p-error">Name is Required</small>
+            </div>
+            <div class="field col">
+                <label for="icon">Icon</label>
+                <input id="icon" formControlName=icon type="text" class="inputfield w-full">
+                <small *ngIf="createCat.get('icon')?.invalid && createCat.get('icon')?.touched" class="p-error">Icon is Required</small>
+            </div>
+        </div>
+        </form>
+      </div>
+    </div>
+  </p-card>
+</div>
