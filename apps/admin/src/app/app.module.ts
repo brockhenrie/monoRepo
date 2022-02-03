@@ -44,6 +44,7 @@ const ROUTES:Routes = [
     {path:'dashboard', component: DashboardComponent},
     {path:'categories', component: CategoriesListComponent},
     {path:'categories/form', component:CategoriesFormComponent},
+    {path:'categories/form/:id', component:CategoriesFormComponent},
 
   ]
 }

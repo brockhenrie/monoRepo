@@ -1,105 +1,73 @@
+
+ <p-toast hideTransitionOptions="100ms" showTransitionOptions="100ms" showTransformOptions="translate(-90%,90%)" hideTransformOptions="translateX(-100%)"></p-toast>
 <p-dialog [(visible)]="display" [style]="{ width: '400px', height: '400px' }">
-    <p-card>
+  <p-card>
 
-        <p-table
-            styleClass="p-datatable-gridlines"
-            [value]="[selectedCategory!]"
-            responsiveLayout="scroll"
-        >
-            <ng-template pTemplate="header">
-                <tr>
-                    <th>Name</th>
-                    <th>Icon</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-category>
-                <tr>
-                    <td>{{ category?.name }}</td>
-                    <td>{{ category?.icon }}</td>
-                </tr>
-            </ng-template>
-        </p-table>
+    <ng-template pTemplate="header">
+      <div class="grid">
+        <div class="col-4"></div>
+        <div class="col-4">
+          Are you Sure?
+        </div>
+        <div class="col-4"></div>
+      </div>
 
-        <ng-template pTemplate="footer">
-          <button
-          pButton
-          type="button"
-          icon="pi pi-cancel"
-          iconPos="left"
-          class="p-button-raised p-button-text p-button-primary"
-          (click)="toggleDialog()"
-      ></button>
-      <button
-          pButton
-          type="button"
-          icon="pi pi-trash"
-          iconPos="left"
-          class="p-button-raised p-button-text p-button-danger"
-          (click)="onDeleteCategory(selectedCategory.id)"
-      ></button>
-        </ng-template>
-    </p-card>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+      <div class="grid">
+        <div class="col-4"></div>
+        <div class="col-4">
+          <button pButton type="button" class="p-button-raised p-button-text p-button-danger"
+          (click)="onDeleteCategory(selectedCategory.id)">Delete</button>
+          <button pButton type="button" class="p-button-raised p-button-text p-button-primary"
+          (click)="toggleDialog()">Cancel</button>
+        </div>
+        <div class="col-4"></div>
+      </div>
+
+    </ng-template>
+  </p-card>
 </p-dialog>
 
 <div class="admin-page">
-    <p-card header="Categories" subheader="List of all Categories">
-        <div class="grid">
-            <div class="col-12">
-                <p-toolbar>
-                    <div class="p-toolbar-group-left">
-                        <p-button
-                            routerLink="form"
-                            styleClass="p-button-success"
-                            label="New"
-                            icon="pi pi-plus"
-                        ></p-button>
-                    </div>
-                </p-toolbar>
-            </div>
-        </div>
+  <p-card header="Categories" subheader="List of all Categories">
+    <div class="grid">
+      <div class="col-12">
+        <p-toolbar>
+          <div class="p-toolbar-group-left">
+            <p-button routerLink="form" styleClass="p-button-success" label="New" icon="pi pi-plus"></p-button>
+          </div>
+        </p-toolbar>
+      </div>
+    </div>
 
-        <div class="grid">
-            <div class="col-12" *ngIf="categories$ | async as categories">
-                <p-table
-                    styleClass="p-datatable-gridlines"
-                    [value]="categories"
-                    responsiveLayout="scroll"
-                >
-                    <ng-template pTemplate="header">
-                        <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                            <th>Icon</th>
-                            <th></th>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-category>
-                        <tr>
-                            <td>{{ category.id }}</td>
-                            <td>{{ category.name }}</td>
-                            <td>{{ category.icon }}</td>
-                            <td>
-                                <button
-                                    pButton
-                                    type="button"
-                                    icon="pi pi-pencil"
-                                    iconPos="left"
-                                    class="p-button-raised p-button-text p-button-primary"
-                                    (click)="onEditCategory(category.id)"
-                                ></button>
-                                <button
-                                    pButton
-                                    type="button"
-                                    icon="pi pi-trash"
-                                    iconPos="left"
-                                    class="p-button-raised p-button-text p-button-danger"
-                                    (click)="toggleDialog(category)"
-                                ></button>
-                            </td>
-                        </tr>
-                    </ng-template>
-                </p-table>
-            </div>
-        </div>
-    </p-card>
+    <div class="grid">
+      <div class="col-12">
+        <p-table styleClass="p-datatable-gridlines" [value]="categories$ | async " responsiveLayout="scroll">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Icon</th>
+              <th></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-category>
+            <tr>
+              <td>{{ category.id }}</td>
+              <td>{{ category.name }}</td>
+              <td>{{ category.icon }}</td>
+              <td>
+                <button pButton type="button" icon="pi pi-pencil" iconPos="left"
+                  class="p-button-raised p-button-text p-button-primary" (click)="onEditCategory(category.id)"></button>
+                <button pButton type="button" icon="pi pi-trash" iconPos="left"
+                  class="p-button-raised p-button-text p-button-danger" (click)="toggleDialog(category)"></button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </p-card>
 </div>
