@@ -1,13 +1,14 @@
 import { MessageService } from 'primeng/api';
-import { Category } from './../../../../../../libs/products/src/lib/models/category.model';
-import { CategoriesService } from './../../../../../../libs/products/src/lib/services/categories.service';
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Category } from '../../../../../../../libs/products/src/lib/models/category.model';
+import { CategoriesService } from '../../../../../../../libs/products/src/lib/services/categories.service';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, shareReplay } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'admin-categories-list',
-    templateUrl: './categories-list.component.html'
+    templateUrl: './categories-list.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoriesListComponent implements OnInit {
     categories$: Observable<Category[]>;
@@ -52,7 +53,7 @@ export class CategoriesListComponent implements OnInit {
     }
 
     onEditCategory(id: string) {
-        this.cs.updateCategory(id);
+        this.router.navigateByUrl(`categories/form/${id}`);
     }
 
     private _getCategories() {

@@ -1,0 +1,117 @@
+<div class="admin-page">
+    <p-toast
+        hideTransitionOptions="100ms"
+        showTransitionOptions="100ms"
+        showTransformOptions="translate(-90%,90%)"
+        hideTransformOptions="translateX(-100%)"
+    ></p-toast>
+    <p-card header="Order status" subheader="You can see order details here">
+      <div class="grid">
+        <div class="col-10"></div>
+        <div class="col-2">
+          <p-button  styleClass="p-button-danger mr-2" label="Back" (onClick)="back()"></p-button>
+        </div>
+      </div>
+        <p-fieldset
+            legend="Order Details"
+            styleClass="mb-4"
+            [toggleable]="true"
+        >
+            <div class="grid">
+                <div class="col-4">
+                    <h5 for="id">Order Id</h5>
+                    <p>{{ activeOrder?.id }}</p>
+                </div>
+
+                <div class="col-4">
+                    <h5 for="dateOrdered">Order Date</h5>
+                    <p id="dateOrdered" name="dateOrdered">
+                        {{ activeOrder?.dateOrdered | date: 'short' }}
+                    </p>
+                </div>
+
+                <div class="col-4">
+                    <h5 for="status">Order Status</h5>
+                    <p-dropdown
+                    [options]="orderStatuses"
+                    optionLabel="label"
+                    optionValue="id"
+                    [(ngModel)]="selectedStatus"
+                    (onChange)="onStatusChange($event)"></p-dropdown>
+                </div>
+
+                <div class="col-4">
+                    <h5>Total Price</h5>
+                    <p>{{ activeOrder?.totalPrice | currency: 'USD' }}</p>
+                </div>
+            </div>
+        </p-fieldset>
+
+        <p-fieldset legend="Order Items" styleClass="mb-4" [toggleable]="true">
+            <div class="grid p-mb-5">
+                <div class="col-2 font-bold">Name</div>
+                <div class="col-2 font-bold">Brand</div>
+                <div class="col-2 font-bold">Category</div>
+                <div class="col-2 font-bold">Price</div>
+                <div class="col-2 font-bold">Quantity</div>
+                <div class="col-2 font-bold">Subtotal</div>
+            </div>
+            <div
+                class="grid p-mb-5"
+                *ngFor="let orderItem of activeOrder?.orderItems"
+            >
+                <div class="col-2">{{ orderItem.product.name }}</div>
+                <div class="col-2">{{ orderItem.product.brand }}</div>
+                <div class="col-2">{{ orderItem.product.category.name }}</div>
+                <div class="col-2">
+                    {{ orderItem.product.price | currency: 'USD' }}
+                </div>
+                <div class="col-2">{{ orderItem.quantity }}</div>
+                <div class="col-2">
+                    {{
+                        orderItem.product.price * orderItem.quantity
+                            | currency: 'USD'
+                    }}
+                </div>
+            </div>
+            <div class="grid mt-1">
+                <div class="col-8"></div>
+                <div class="col-2 font-bold">Total Price</div>
+                <div class="col-2">
+                    {{ activeOrder?.totalPrice | currency: 'USD' }}
+                </div>
+            </div>
+        </p-fieldset>
+
+        <p-fieldset
+            legend="Order Contact Info"
+            styleClass="mb-4"
+            [toggleable]="true"
+        >
+            <div class="grid p-mb-5">
+                <div class="col-4 ">
+                  <h5>Order Address</h5>
+                  <p>
+                    {{activeOrder?.shippingAddress1}}<br>
+                    {{activeOrder?.shippingAddress2}}<br>
+                    {{activeOrder?.city }} {{activeOrder?.state}}, {{activeOrder?.zip}}
+                  </p>
+                </div>
+
+                <div class="col-4 ">
+                  <h5>Customer Info</h5>
+                  <p>
+                    {{activeOrder?.user.name}}<br>
+                  </p>
+                </div>
+
+                <div class="col-4 ">
+                  <h5>Customer Phone</h5>
+                  <p>
+                    {{activeOrder?.phone}}<br>
+                  </p>
+                </div>
+            </div>
+        </p-fieldset>
+    </p-card>
+</div>

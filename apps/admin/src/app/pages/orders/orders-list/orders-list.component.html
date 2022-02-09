@@ -1,0 +1,104 @@
+<p-toast
+    hideTransitionOptions="100ms"
+    showTransitionOptions="100ms"
+    showTransformOptions="translate(-90%,90%)"
+    hideTransformOptions="translateX(-100%)"
+></p-toast>
+<p-dialog [(visible)]="display" [style]="{ width: '400px', height: '400px' }">
+    <p-card>
+        <ng-template pTemplate="header">
+            <div class="grid">
+                <div class="col-4"></div>
+                <div class="col-4">Are you Sure?</div>
+                <div class="col-4"></div>
+            </div>
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+            <div class="grid">
+                <div class="col-4"></div>
+                <div class="col-4">
+                    <button
+                        pButton
+                        type="button"
+                        class="p-button-raised p-button-text p-button-danger"
+                        (click)="onDeleteOrder(selectedOrder.id)"
+                    >
+                        Delete
+                    </button>
+                    <button
+                        pButton
+                        type="button"
+                        class="p-button-raised p-button-text p-button-primary"
+                        (click)="toggleDialog()"
+                    >
+                        Cancel
+                    </button>
+                </div>
+                <div class="col-4"></div>
+            </div>
+        </ng-template>
+    </p-card>
+</p-dialog>
+
+<div class="admin-page">
+    <p-card header="Orders" subheader="List of all Orders">
+        <div class="grid">
+            <div class="col-12">
+                <p-table
+                    styleClass="p-datatable-gridlines"
+                    [value]="orders$ | async"
+                    responsiveLayout="scroll"
+                >
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pSortableColumn="name">
+                                Name <p-sortIcon field="name"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="totalPrice">
+                                Total Price
+                                <p-sortIcon field="totalPrice"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="dateOrdered">
+                              Date Ordered
+                              <p-sortIcon field="dateOrdered"></p-sortIcon>
+                          </th>
+                            <th pSortableColumn="status">
+                                Status<p-sortIcon field="status"></p-sortIcon>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-order>
+                        <tr>
+                            <td>{{ order.user.name }}</td>
+                            <td>{{ order.totalPrice | currency }}</td>
+                            <td>{{ order.dateOrdered | date: 'short'}}</td>
+                            <td>
+                           <p-tag [value]="orderStatus[order.status].label" [severity]="orderStatus[order.status].color"></p-tag>
+                            </td>
+                            <td>
+                                <button
+                                    pButton
+                                    type="button"
+                                    icon="pi pi-eye"
+                                    iconPos="left"
+                                    class="p-button-raised p-button-text p-button-primary"
+                                    (click)="onShowOrder(order.id)"
+                                ></button>
+                                <button
+                                    pButton
+                                    type="button"
+                                    icon="pi pi-trash"
+                                    iconPos="left"
+                                    class="p-button-raised p-button-text p-button-danger"
+                                    (click)="toggleDialog(order)"
+                                ></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </p-card>
+</div>

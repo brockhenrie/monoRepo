@@ -2,7 +2,7 @@
     "projectType": "library",
     "root": "libs/orders",
     "sourceRoot": "libs/orders/src",
-    "prefix": "b-henrie-dev",
+    "prefix": "orders",
     "targets": {
         "test": {
             "executor": "@nrwl/jest:jest",

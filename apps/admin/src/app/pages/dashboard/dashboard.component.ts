@@ -2,6 +2,9 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { OrdersService } from '@b-henrie-dev/orders';
+import { ProductsService } from '@b-henrie-dev/products';
+import { UsersService } from '@b-henrie-dev/users';
 
 @Component({
   selector: 'admin-dashboard',
@@ -10,7 +13,16 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  userCount$ = this.us.getTotalUsers();
+  totalProducts$ = this.ps.getTotalProducts();
+  totalSales$ = this.os.getTotalSales();
+  orderCount$ = this.os.getOrderCount();
+
+  constructor(
+    private us: UsersService,
+    private ps: ProductsService,
+    private os:OrdersService
+    ) { }
 
   ngOnInit(): void {
   }

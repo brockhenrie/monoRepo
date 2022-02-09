@@ -1,3 +1,4 @@
+import { AuthService } from '@b-henrie-dev/users';
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
@@ -9,9 +10,12 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 })
 export class SidebarComponent implements OnInit {
 
-  constructor() { }
+  constructor(private auth:AuthService) { }
 
   ngOnInit(): void {
   }
 
+  onLogout(){
+    this.auth.logout();
+  }
 }

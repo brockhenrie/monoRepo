@@ -1,0 +1,58 @@
+<div class="login-register">
+    <div class="login-register-panel">
+        <div class="grid">
+            <div class="col-6">
+                <img src="assets/images/login-photo.png" />
+            </div>
+            <div class="col-6 p-5">
+                <h3 style="color:aliceblue">Welcome</h3>
+                <h2 style="color:aliceblue">Login Page</h2>
+                <form [formGroup]="form" (ngSubmit)="onLogin() " >
+                    <div class="grid">
+                        <div class="col-12">
+                            <div class="p-inputgroup">
+                                <span class="p-inputgroup-addon"
+                                    ><i class="pi pi-user"></i
+                                ></span>
+                                <input
+                                    type="text"
+                                    formControlName="email"
+                                    pInputText
+                                    placeholder="Email"
+                                >
+
+                            </div>
+                            <small class="p-error" *ngIf="loginForm['email'].invalid && loginForm['email'].touched">
+                              <span *ngIf="loginForm['email'].hasError('required')">Email is required</span>
+                              <span *ngIf="loginForm['email'].hasError('email')">Email is invalid</span>
+
+                            </small>
+                        </div>
+                        <div class="col-12 ">
+                            <div class="p-inputgroup">
+                                <span class="p-inputgroup-addon"
+                                    ><i class="pi pi-key"></i
+                                ></span>
+                                <input
+                                    type="text"
+                                    formControlName="password"
+                                    pInputText
+                                    placeholder="Password"
+                                />
+                            </div>
+                            <small class="p-error" *ngIf="loginForm['password'].invalid && loginForm['password'].touched">
+                              <span *ngIf="loginForm['password'].hasError('required')">Password is required</span>
+                              <span *ngIf="loginForm['password'].hasError('minLength')">Length is invalid</span>
+
+                            </small>
+                        </div>
+                        <div class="col-12">
+                          <p-button label="Login"  styleClass="full-btn" (onClick)="onLogin()" [disabled]="form.invalid"></p-button>
+                          <small class="p-error" *ngIf="authMessage">{{authMessage}}</small>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

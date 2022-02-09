@@ -1,3 +1,5 @@
+import { environment } from '@env/environment';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Router } from '@angular/router';
 import { Category } from './../models/category.model';
 /* eslint-disable @typescript-eslint/no-empty-function */
@@ -8,28 +10,27 @@ import { Observable, catchError, of, shareReplay } from 'rxjs';
     providedIn: 'root'
 })
 export class CategoriesService {
-    private apiUrl = 'http://localhost:3000/api/v1/categories/';
+    private apiUrl = environment.categoriesApiUrl;
 
     constructor(private http: HttpClient, private router: Router) {}
 
-    getCategories(id?: string): Observable<Category[] | Category> {
-        if (id) {
-            return this.http.get<Category>(this.apiUrl + id).pipe(
-                catchError((err) => {
-                    console.log(JSON.stringify(err));
-                    return [];
-                }),
-                shareReplay(1)
-            );
-        } else {
-            return this.http.get<Category[]>(this.apiUrl).pipe(
-                catchError((err) => {
-                    console.log(JSON.stringify(err));
-                    return [];
-                }),
-                shareReplay(1)
-            );
-        }
+    getCategories(): Observable<Category[]> {
+        return this.http.get<Category[]>(this.apiUrl).pipe(
+            catchError((err) => {
+                console.log(JSON.stringify(err));
+                return [];
+            }),
+            shareReplay(1)
+        );
+    }
+    getCategory(id: string): Observable<Category> {
+        return this.http.get<Category>(this.apiUrl + id).pipe(
+            catchError((err) => {
+                console.log(JSON.stringify(err));
+                return [];
+            }),
+            shareReplay(1)
+        );
     }
     createCategory(category: Category) {
         return this.http
@@ -38,15 +39,14 @@ export class CategoriesService {
     }
     deleteCategory(id: string): Observable<Category> {
         return this.http
-            .delete(`${this.apiUrl}${id}`)
+            .delete<Category>(`${this.apiUrl}${id}`)
             .pipe(catchError((err) => this.errorHandler(err)));
     }
 
-    updateCategory(id: string) {
-        this.router.navigateByUrl(`categories/form/${id}`);
-        // return this.http
-        //     .put(`${this.apiUrl}${id}`, category)
-        //     .pipe(catchError((err) => this.errorHandler(err)));
+    updateCategory(category: Category) {
+        return this.http
+            .put<Category>(`${this.apiUrl}${category.id}`, category)
+            .pipe(catchError((err) => this.errorHandler(err)));
     }
 
     private errorHandler(err: any) {

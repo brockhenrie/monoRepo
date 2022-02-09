@@ -12,10 +12,12 @@
 
 //Shared
 @import './apps/admin/shell.scss';
+@import './apps/admin/dashboard.scss';
 
 //config
 @import './base/configuration.scss';
 
 //libs
 @import './libs/ui/ui.scss';
-@import './libs/products/products.scss'
+@import './libs/products/products.scss';
+@import './libs/users/users.scss';

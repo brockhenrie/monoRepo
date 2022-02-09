@@ -1,5 +1,5 @@
 {
-    "npmScope": "b-henrie-dev",
+    "npmScope": "./b-henrie-dev",
     "affected": {
         "defaultBase": "main"
     },

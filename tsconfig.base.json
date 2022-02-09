@@ -18,7 +18,9 @@
             "@b-henrie-dev/orders": ["libs/orders/src/index.ts"],
             "@b-henrie-dev/products": ["libs/products/src/index.ts"],
             "@b-henrie-dev/ui": ["libs/ui/src/index.ts"],
-            "@b-henrie-dev/users": ["libs/users/src/index.ts"]
+            "@b-henrie-dev/users": ["libs/users/src/index.ts"],
+            "@env/*": ["environments/*"],
+            "@users": ["libs/libs/users/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]

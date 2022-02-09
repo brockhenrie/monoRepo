@@ -1,24 +1,28 @@
-import { Category } from './../../../../../../libs/products/src/lib/models/category.model';
+import { Category } from '../../../../../../../libs/products/src/lib/models/category.model';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CategoriesService } from '@b-henrie-dev/products';
 import { MessageService } from 'primeng/api';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
-    selector: 'b-henrie-dev-categories-form',
+    selector: 'admin-categories-form',
     templateUrl: './categories-form.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoriesFormComponent implements OnInit {
+    editMode = false;
     isSubmitted = false;
-    editMode = this._checkEditMode();
+    category$ = new Observable<Category>();
     createCat = this.fb.group({
         name: ['', [Validators.required]],
         icon: ['', [Validators.required]],
-        id: ''
+        id: '',
+        color: ''
     });
+    color!: string;
 
     constructor(
         private fb: FormBuilder,
@@ -28,7 +32,9 @@ export class CategoriesFormComponent implements OnInit {
         private activeRoute: ActivatedRoute
     ) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this._checkEditMode();
+    }
 
     onCreateCategory() {
         this.isSubmitted = true;
@@ -38,7 +44,8 @@ export class CategoriesFormComponent implements OnInit {
         }
         const category: Category = {
             name: this.categoryForm['name'].value,
-            icon: this.categoryForm['icon'].value
+            icon: this.categoryForm['icon'].value,
+            color: this.categoryForm['color'].value
         };
         this.cs.createCategory(category).subscribe((res) => {
             console.log(res);
@@ -53,31 +60,28 @@ export class CategoriesFormComponent implements OnInit {
         this.location.back();
     }
 
-    onUpdateCategory(){
-      this.isSubmitted = true;
-      if (this.createCat.invalid) {
-          this.isSubmitted = false;
-          return;
-      }
-      const category: Category = {
-          name: this.categoryForm['name'].value,
-          icon: this.categoryForm['icon'].value
-      };
-      this.cs.createCategory(category).subscribe((res) => {
-          console.log(res);
-      });
-      this.messageService.add({
-          severity: 'success',
-          summary: `Success`,
-          detail: `Category ${category.name} was created`
-      });
-      this.createCat.reset();
-      this.isSubmitted = false;
-      this.location.back();
+    onUpdateCategory() {
+        if (this.createCat.invalid) return;
+        const category: Category = {
+            name: this.categoryForm['name'].value,
+            icon: this.categoryForm['icon'].value,
+            id: this.categoryForm['id'].value,
+            color: this.categoryForm['color'].value
+        };
+        this.cs.updateCategory(category).subscribe((res) => {
+            console.log(res);
+        });
+        this.messageService.add({
+            severity: 'success',
+            summary: `Success`,
+            detail: `Category ${category.name} was created`
+        });
+        this.createCat.reset();
+        this.location.back();
     }
 
-    back(){
-      this.location.back();
+    back() {
+        this.location.back();
     }
 
     get categoryForm() {
@@ -85,17 +89,17 @@ export class CategoriesFormComponent implements OnInit {
     }
 
     private _checkEditMode() {
-      let editMode;
         this.activeRoute.params.subscribe((params) => {
-          if(params.id){
-           editMode= true;
-           this.cs.getCategories(params.id).subscribe(cat  => {
-              this.createCat.value.name = (cat as Category).name
-              this.createCat.value.icon = (cat as Category).icon,
-              this.createCat.value.id = (cat as Category).id
-           })as Category;
-          }
+            if (params.id) {
+                this.editMode = true;
+                this.cs.getCategory(params.id).subscribe((cat) => {
+                    this.categoryForm['name'].setValue(cat.name),
+                        this.categoryForm['icon'].setValue(cat.icon),
+                        this.categoryForm['id'].setValue(cat.id),
+                        this.categoryForm['color'].setValue(cat.color);
+                });
+                return;
+            }
         });
-        return editMode;
     }
 }
