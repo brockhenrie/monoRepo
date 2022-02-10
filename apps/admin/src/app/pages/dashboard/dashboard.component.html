@@ -38,15 +38,15 @@
                 </p-card>
             </div>
             <div class="col-3" *ngIf="totalSales$ | async as totalSales">
-                <p-card styleClass="d-totalSales">
+                <p-card styleClass="d-totalSales" >
                     <div class="d-item">
                         <div>
                             <i class="pi pi-dollar"></i><br />
                             <span class="name">Sales</span>
                         </div>
 
-                        <span class="number">{{
-                            totalSales['0'].totalsales | currency: 'USD'
+                        <span class="number" >{{
+                            transformTotal(totalSales) | json
                         }}</span>
                     </div>
                 </p-card>

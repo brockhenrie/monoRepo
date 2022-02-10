@@ -1,8 +1,20 @@
-import { BehaviorSubject, catchError, Observable, Subscription } from 'rxjs';
+import {
+    BehaviorSubject,
+    catchError,
+    Observable,
+    Subject,
+    Subscription,
+    takeUntil
+} from 'rxjs';
 import { Location } from '@angular/common';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Order, ORDER_STATUS, OrdersService } from '@b-henrie-dev/orders';
+import {
+    Order,
+    ORDER_STATUS,
+    OrdersService,
+    OrderStatus
+} from '@b-henrie-dev/orders';
 import { MessageService } from 'primeng/api';
 
 @Component({
@@ -11,10 +23,12 @@ import { MessageService } from 'primeng/api';
     changeDetection: ChangeDetectionStrategy.Default
 })
 export class OrdersDetailsComponent implements OnInit {
-    orderStatuses = [];
-    selectedStatus:number;
-    activeOrder!: Order;
+    private endSubs$ = new Subject<void>();
 
+    orderStatuses = ORDER_STATUS;
+    selectedStatus!: number;
+    activeOrder!: Order;
+    statuses!:OrderStatus[];
     constructor(
         private os: OrdersService,
         private messageService: MessageService,
@@ -23,59 +37,79 @@ export class OrdersDetailsComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.mapOrderStatus();
+       this.statuses = this.mapOrderStatus();
         this._populateOrder();
-
-
-
+    }
+    ngOnDestroy(): void {
+        this.endSubs();
     }
 
     back() {
         this.location.back();
     }
 
-    onStatusChange(event){
-      this.os.updateOrder({status: event.value}, this.activeOrder.id).subscribe(()=>{
-        this.messageService.add({
-          severity:'success',
-          summary:'Success',
-          detail:'Status updated'
-        })
-      },
-      (err)=>{
-        this.messageService.add({
-          severity:'danger',
-          summary:'Error',
-          detail:'Status not updated'
-        })
-      console.log(err)
-      })
-
+    onStatusChange(event: any) {
+        this.os
+            .updateOrder({ status: event.value }, this.activeOrder.id as string)
+            .pipe(takeUntil(this.endSubs$))
+            .subscribe(
+                () => {
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Success',
+                        detail: 'Status updated'
+                    });
+                },
+                (err) => {
+                    this.messageService.add({
+                        severity: 'danger',
+                        summary: 'Error',
+                        detail: 'Status not updated'
+                    });
+                    console.log(err);
+                }
+            );
     }
 
     private _populateOrder() {
-        this.activeRoute.params.subscribe((params) => {
-            if (params.id) {
-                this.os.getOrder(params.id).subscribe((order) => {
-                    this.activeOrder = order;
-                    this.selectedStatus = order.status;
-                });
+        this.activeRoute.params
+            .pipe(takeUntil(this.endSubs$))
+            .subscribe((params) => {
+                if (params['id']) {
+                    this.os
+                        .getOrder(params['id'])
+                        .pipe(takeUntil(this.endSubs$))
+                        .subscribe((order) => {
+                            this.activeOrder = order;
+                            this.selectedStatus = order.status as number;
+                        });
 
-                console.log(this.activeOrder);
-
-            }
-
-
-        });
+                    // console.log(this.activeOrder);
+                }
+            });
     }
     private mapOrderStatus() {
-       this.orderStatuses = Object.keys(ORDER_STATUS).map((key)=>{
-          return{
-            id: key,
-            label: ORDER_STATUS[key].label,
-            color: ORDER_STATUS[key].color
-
+        return Object.keys(this.orderStatuses).map(
+          (_value, index, orderStatuses) => {
+            return {
+              value: index,
+              label: orderStatuses[index],
+              color: orderStatuses[index]
+            };
           }
-        })
+        ) as unknown as OrderStatus[];
+    }
+
+    getTotal(num?: number, num2?:number) {
+        if (num && num2) {
+            return num * num2 as number;
+        } else {
+            return 0;
+        }
+    }
+
+    private endSubs() {
+        this.endSubs$.next();
+        // console.log('Orders detail subs destroyed');
     }
 }

@@ -59,10 +59,10 @@
         </div>
 
         <div class="grid">
-            <div class="col-12">
+            <div class="col-12" *ngIf="users$ | async as users">
                 <p-table
                     styleClass="p-datatable-gridlines"
-                    [value]="users$ | async"
+                    [value]="users"
                     responsiveLayout="scroll"
                 >
                     <ng-template pTemplate="header">
@@ -91,13 +91,13 @@
                                     *ngIf="user.isAdmin"
                                     icon="pi pi-check"
                                     severity="success"
-                                    rounded="true"
+                                    [rounded]="true"
                                 ></p-tag>
                                 <p-tag
                                     *ngIf="!user.isAdmin"
                                     icon="pi pi-times"
                                     severity="danger"
-                                    rounded="true"
+                                    [rounded]="true"
                                 ></p-tag>
                             </td>
                             <td>{{ user.state }}</td>

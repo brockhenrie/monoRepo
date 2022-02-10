@@ -1,7 +1,7 @@
 import { MessageService } from 'primeng/api';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { User, UsersService } from '@b-henrie-dev/users';
 
 @Component({
@@ -9,8 +9,9 @@ import { User, UsersService } from '@b-henrie-dev/users';
     templateUrl: './users-list.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UsersListComponent implements OnInit {
-    users$: Observable<User[]>;
+export class UsersListComponent implements OnInit, OnDestroy {
+    users$!: Observable<User[]>;
+    private endSubs$ = new Subject<void>();
 
     selectedUser!: User;
 
@@ -23,15 +24,21 @@ export class UsersListComponent implements OnInit {
     ngOnInit(): void {
         this._getUsers();
     }
+    ngOnDestroy(): void {
+      this.endSubs();
+  }
 
     display: boolean = false;
     toggleDialog(user?: User) {
-        this.selectedUser = user;
+        this.selectedUser = user as User;
         this.display = !this.display;
     }
 
-    onDeleteUser(id: string) {
-        this.us.deleteUser(id).subscribe(
+    onDeleteUser(id?: string) {
+      if(!id){
+        return
+      }
+        this.us.deleteUser(id as string).pipe(takeUntil(this.endSubs$)).subscribe(
             () => {
                 this.ms.add({
                     severity: 'success',
@@ -56,6 +63,11 @@ export class UsersListComponent implements OnInit {
     }
 
     private _getUsers() {
-        this.users$ = this.us.getUsers() as Observable<User[]>;
+        this.users$ = this.us.getUsers();
     }
+
+    private endSubs() {
+      this.endSubs$.next();
+      // console.log("Users list subs destroyed")
+  }
 }

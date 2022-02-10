@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
     CategoriesService,
@@ -9,19 +9,20 @@ import {
 import { MessageService } from 'primeng/api';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'admin-products-form',
     templateUrl: './products-form.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProductsFormComponent implements OnInit {
+export class ProductsFormComponent implements OnInit, OnDestroy{
     formData = new FormData();
     editMode = false;
     categories$ = new Observable<Category[]>();
     productF!: FormGroup;
-    imageDisplay: string | ArrayBuffer;
+    imageDisplay!: string | ArrayBuffer;
+    private endSubs$ = new Subject<void>();
 
     constructor(
         private fb: FormBuilder,
@@ -38,10 +39,14 @@ export class ProductsFormComponent implements OnInit {
         this.categories$ = this.cs.getCategories();
     }
 
+    ngOnDestroy(): void {
+      this.endSubs();
+  }
+
     onCreateProduct() {
         if (this.productF.invalid) return;
         this.appendForm();
-        this.ps.createProduct(this.formData).subscribe(
+        this.ps.createProduct(this.formData).pipe(takeUntil(this.endSubs$)).subscribe(
             (res) => {
                 console.log(res);
                 this.location.back();
@@ -59,7 +64,7 @@ export class ProductsFormComponent implements OnInit {
     onUpdateProduct() {
         if (this.productF.invalid) return;
         this.appendForm();
-        this.ps.updateProduct(this.formData).subscribe(
+        this.ps.updateProduct(this.formData).pipe(takeUntil(this.endSubs$)).subscribe(
             (res) => {
                 console.log(res);
                 this.location.back();
@@ -78,7 +83,7 @@ export class ProductsFormComponent implements OnInit {
         this.location.back();
     }
 
-    onImageUpload(event) {
+    onImageUpload(event:any) {
         const file = event.target.files[0];
         if (file) {
             this.productF.patchValue({ image: file });
@@ -86,7 +91,7 @@ export class ProductsFormComponent implements OnInit {
             const fileReader = new FileReader();
 
             fileReader.onload = () => {
-                this.imageDisplay = fileReader.result;
+                this.imageDisplay = fileReader.result as string | ArrayBuffer;
             };
             fileReader.readAsDataURL(file);
         }
@@ -97,10 +102,10 @@ export class ProductsFormComponent implements OnInit {
     }
 
     private _checkEditMode() {
-        this.activeRoute.params.subscribe((params) => {
-            if (params.id) {
+        this.activeRoute.params.pipe(takeUntil(this.endSubs$)).subscribe((params) => {
+            if (params['id']) {
                 this.editMode = true;
-                this.ps.getProduct(params.id).subscribe((product) => {
+                this.ps.getProduct(params['id']).pipe(takeUntil(this.endSubs$)).subscribe((product) => {
                     this.productForm['name'].setValue(product.name),
                         this.productForm['brand'].setValue(product.brand),
                         this.productForm['price'].setValue(product.price),
@@ -115,7 +120,7 @@ export class ProductsFormComponent implements OnInit {
                             product.richDescription
                         ),
                         this.productForm['image'].setValue(product.image),
-                        (this.imageDisplay = product.image);
+                        (this.imageDisplay = product.image as string| ArrayBuffer);
                     this.productForm['isFeatured'].setValue(product.isFeatured),
                         this.productForm['id'].setValue(product.id);
                 });
@@ -163,4 +168,9 @@ export class ProductsFormComponent implements OnInit {
         );
         this.formData.append('id', this.productForm['id'].value);
     }
+
+    private endSubs() {
+      this.endSubs$.next();
+      // console.log('Products form subs destroyed');
+  }
 }

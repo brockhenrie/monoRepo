@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, of, shareReplay, tap } from 'rxjs';
+import { Observable, catchError, of, shareReplay } from 'rxjs';
 import { Order } from '../models/order.model';
 @Injectable({
   providedIn: 'root'
@@ -51,9 +51,7 @@ export class OrdersService {
   }
 
   getTotalSales(){
-    return this.http.get<number>(this.apiUrl+'get/totalsales').pipe(
-      tap(res=>console.log(res))
-    )
+    return this.http.get<number>(this.apiUrl+'get/totalsales')
   }
 
   getOrderCount(){

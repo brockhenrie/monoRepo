@@ -33,7 +33,7 @@
                 <div class="col-4">
                     <h5 for="status">Order Status</h5>
                     <p-dropdown
-                    [options]="orderStatuses"
+                    [options]="statuses"
                     optionLabel="label"
                     optionValue="id"
                     [(ngModel)]="selectedStatus"
@@ -60,17 +60,17 @@
                 class="grid p-mb-5"
                 *ngFor="let orderItem of activeOrder?.orderItems"
             >
-                <div class="col-2">{{ orderItem.product.name }}</div>
-                <div class="col-2">{{ orderItem.product.brand }}</div>
-                <div class="col-2">{{ orderItem.product.category.name }}</div>
+                <div class="col-2">{{ orderItem.product?.name }}</div>
+                <div class="col-2">{{ orderItem.product?.brand }}</div>
+                <div class="col-2">{{ orderItem.product?.category?.name }}</div>
                 <div class="col-2">
-                    {{ orderItem.product.price | currency: 'USD' }}
+                    {{ orderItem.product?.price | currency: 'USD' }}
                 </div>
                 <div class="col-2">{{ orderItem.quantity }}</div>
                 <div class="col-2">
                     {{
-                        orderItem.product.price * orderItem.quantity
-                            | currency: 'USD'
+                        getTotal(orderItem?.product?.price, orderItem?.quantity)
+                            | currency
                     }}
                 </div>
             </div>
@@ -101,7 +101,7 @@
                 <div class="col-4 ">
                   <h5>Customer Info</h5>
                   <p>
-                    {{activeOrder?.user.name}}<br>
+                    {{activeOrder?.user?.name}}<br>
                   </p>
                 </div>
 

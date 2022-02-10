@@ -1,9 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, MinLengthValidator } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { countries, states, User, UsersService } from '@b-henrie-dev/users';
 
 @Component({
@@ -11,13 +11,14 @@ import { countries, states, User, UsersService } from '@b-henrie-dev/users';
     templateUrl: './users-form.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UsersFormComponent implements OnInit {
+export class UsersFormComponent implements OnInit, OnDestroy{
     states = states;
     countries = countries;
     editMode = false;
     category$ = new Observable<User>();
     form!: FormGroup;
     newUser = new User();
+    private endSubs$ = new Subject<void>();
 
     constructor(
         private fb: FormBuilder,
@@ -33,10 +34,14 @@ export class UsersFormComponent implements OnInit {
         this._checkEditMode();
     }
 
+    ngOnDestroy(): void {
+      this.endSubs();
+  }
+
     onCreateUser() {
         if (this.form.invalid) return;
        this.createUser();
-        this.us.createUser(this.newUser).subscribe((res) => {
+        this.us.createUser(this.newUser).pipe(takeUntil(this.endSubs$)).subscribe((res) => {
             console.log(res);
             this.back();
         });
@@ -52,7 +57,7 @@ export class UsersFormComponent implements OnInit {
     onUpdateUser() {
         if (this.form.invalid) return;
         this.createUser();
-        this.us.updateUser(this.newUser).subscribe((res) => {
+        this.us.updateUser(this.newUser).pipe(takeUntil(this.endSubs$)).subscribe((res) => {
             console.log(res);
             this.messageService.add({
               severity: 'success',
@@ -74,10 +79,10 @@ export class UsersFormComponent implements OnInit {
     }
 
     private _checkEditMode() {
-        this.activeRoute.params.subscribe((params) => {
-            if (params.id) {
+        this.activeRoute.params.pipe(takeUntil(this.endSubs$)).subscribe((params) => {
+            if (params['id']) {
                 this.editMode = true;
-                this.us.getUser(params.id).subscribe((user) => {
+                this.us.getUser(params['id']).pipe(takeUntil(this.endSubs$)).subscribe((user) => {
                     this.userForm['name'].setValue(user.name),
                     this.userForm['email'].setValue(user.email),
                     this.userForm['id'].setValue(user.id),
@@ -129,4 +134,8 @@ export class UsersFormComponent implements OnInit {
       this.newUser.country= this.userForm['country'].value;
       this.newUser.password= this.userForm['password'].value;
   }
+  private endSubs() {
+    this.endSubs$.next();
+    // console.log("Users form subs destroyed")
+}
 }

@@ -59,10 +59,10 @@
         </div>
 
         <div class="grid">
-            <div class="col-12">
+            <div class="col-12" *ngIf="categories$ | async as categories">
                 <p-table
                     styleClass="p-datatable-gridlines"
-                    [value]="categories$ | async"
+                    [value]="categories"
                     responsiveLayout="scroll"
                 >
                     <ng-template pTemplate="header">

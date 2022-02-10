@@ -1,18 +1,20 @@
 import { Category } from '../../../../../../../libs/products/src/lib/models/category.model';
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CategoriesService } from '@b-henrie-dev/products';
 import { MessageService } from 'primeng/api';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'admin-categories-form',
     templateUrl: './categories-form.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CategoriesFormComponent implements OnInit {
+export class CategoriesFormComponent implements OnInit, OnDestroy {
+  private endSubs$ = new Subject<void>();
+
     editMode = false;
     isSubmitted = false;
     category$ = new Observable<Category>();
@@ -35,6 +37,9 @@ export class CategoriesFormComponent implements OnInit {
     ngOnInit(): void {
         this._checkEditMode();
     }
+    ngOnDestroy(): void {
+      this.endSubs();
+  }
 
     onCreateCategory() {
         this.isSubmitted = true;
@@ -47,7 +52,7 @@ export class CategoriesFormComponent implements OnInit {
             icon: this.categoryForm['icon'].value,
             color: this.categoryForm['color'].value
         };
-        this.cs.createCategory(category).subscribe((res) => {
+        this.cs.createCategory(category).pipe(takeUntil(this.endSubs$)).subscribe((res) => {
             console.log(res);
         });
         this.messageService.add({
@@ -68,7 +73,7 @@ export class CategoriesFormComponent implements OnInit {
             id: this.categoryForm['id'].value,
             color: this.categoryForm['color'].value
         };
-        this.cs.updateCategory(category).subscribe((res) => {
+        this.cs.updateCategory(category).pipe(takeUntil(this.endSubs$)).subscribe((res) => {
             console.log(res);
         });
         this.messageService.add({
@@ -90,9 +95,9 @@ export class CategoriesFormComponent implements OnInit {
 
     private _checkEditMode() {
         this.activeRoute.params.subscribe((params) => {
-            if (params.id) {
+            if (params['id']) {
                 this.editMode = true;
-                this.cs.getCategory(params.id).subscribe((cat) => {
+                this.cs.getCategory(params['id']).subscribe((cat) => {
                     this.categoryForm['name'].setValue(cat.name),
                         this.categoryForm['icon'].setValue(cat.icon),
                         this.categoryForm['id'].setValue(cat.id),
@@ -102,4 +107,10 @@ export class CategoriesFormComponent implements OnInit {
             }
         });
     }
+    private endSubs() {
+      this.endSubs$.next();
+      // console.log("Categories form subs destroyed")
+  }
 }
+
+

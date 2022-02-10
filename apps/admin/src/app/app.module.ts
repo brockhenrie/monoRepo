@@ -1,3 +1,4 @@
+import { AppRoutingModule } from './app-routing.module';
 import { JwtInterceptor } from '@b-henrie-dev/users';
 import { LocalstorageService } from './../../../../libs/users/src/lib/services/localstorage.service';
 import { OrdersService } from './../../../../libs/orders/src/lib/services/orders.service';
@@ -66,28 +67,7 @@ const UX_MODULE = [
     FieldsetModule
 ];
 
-const ROUTES: Routes = [
-    {
-        path: '',
-        component: ShellComponent,
-        canActivate:[AuthGuard],
-        children: [
-            {path:'', redirectTo: 'dashboard', pathMatch: 'full'},
-            { path: 'dashboard', component: DashboardComponent },
-            { path: 'categories', component: CategoriesListComponent },
-            { path: 'categories/form', component: CategoriesFormComponent },
-            { path: 'categories/form/:id', component: CategoriesFormComponent },
-            { path: 'products', component: ProductsListComponent },
-            { path: 'products/form', component: ProductsFormComponent },
-            { path: 'products/form/:id', component: ProductsFormComponent },
-            { path: 'users', component: UsersListComponent },
-            { path: 'users/form', component: UsersFormComponent },
-            { path: 'users/form/:id', component: UsersFormComponent },
-            { path: 'orders', component: OrdersListComponent },
-            { path: 'orders/details/:id', component: OrdersDetailsComponent }
-        ]
-    }
-];
+
 
 @NgModule({
     declarations: [
@@ -107,7 +87,7 @@ const ROUTES: Routes = [
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
-        RouterModule.forRoot(ROUTES, { initialNavigation: 'enabledBlocking' }),
+        AppRoutingModule,
         UiModule,
         HttpClientModule,
         FormsModule,
@@ -116,15 +96,12 @@ const ROUTES: Routes = [
         UsersModule
     ],
     providers: [
-       {provide:HTTP_INTERCEPTORS,useClass: JwtInterceptor, multi: true},
         CategoriesService,
         MessageService,
         ProductsService,
         UsersService,
         OrdersService,
         AuthService,
-        AuthGuard,
-        IsAdminGuard,
         LocalstorageService,
 
 

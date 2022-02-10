@@ -49,8 +49,8 @@ export class ProductsService {
     }
 
 
-    getTotalProducts():Observable<number>{
-      return this.http.get<number>(this.apiUrl+'get/count');
+    getTotalProducts():Observable<unknown[]>{
+      return this.http.get<unknown[]>(this.apiUrl+'get/count');
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -61,7 +61,5 @@ export class ProductsService {
         return of(errorCategory);
     }
 }
-function tap(arg0: (res: any) => void): import("rxjs").OperatorFunction<number, number> {
-  throw new Error('Function not implemented.');
-}
 
+ 

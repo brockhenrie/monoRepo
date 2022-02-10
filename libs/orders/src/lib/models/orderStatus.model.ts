@@ -25,3 +25,6 @@ export const ORDER_STATUS= {
     value:4
   }
 }
+
+
+export interface OrderStatus{ [value:number]: string, label: string; color: string; }

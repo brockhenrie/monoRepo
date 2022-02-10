@@ -44,10 +44,10 @@
 <div class="admin-page">
     <p-card header="Orders" subheader="List of all Orders">
         <div class="grid">
-            <div class="col-12">
+            <div class="col-12" *ngIf="orders$ | async as orders">
                 <p-table
                     styleClass="p-datatable-gridlines"
-                    [value]="orders$ | async"
+                    [value]="orders"
                     responsiveLayout="scroll"
                 >
                     <ng-template pTemplate="header">
@@ -75,7 +75,7 @@
                             <td>{{ order.totalPrice | currency }}</td>
                             <td>{{ order.dateOrdered | date: 'short'}}</td>
                             <td>
-                           <p-tag [value]="orderStatus[order.status].label" [severity]="orderStatus[order.status].color"></p-tag>
+                           <p-tag [value]="getOrderStatus(order.status).label" [severity]="getOrderStatus(order.status).color"></p-tag>
                             </td>
                             <td>
                                 <button

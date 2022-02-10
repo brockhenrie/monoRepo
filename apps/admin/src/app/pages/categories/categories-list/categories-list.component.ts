@@ -1,17 +1,23 @@
 import { MessageService } from 'primeng/api';
 import { Category } from '../../../../../../../libs/products/src/lib/models/category.model';
 import { CategoriesService } from '../../../../../../../libs/products/src/lib/services/categories.service';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    OnDestroy,
+    OnInit
+} from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'admin-categories-list',
     templateUrl: './categories-list.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CategoriesListComponent implements OnInit {
-    categories$: Observable<Category[]>;
+export class CategoriesListComponent implements OnInit, OnDestroy {
+    categories$!: Observable<Category[]>;
+    private endSubs$ = new Subject<void>();
 
     selectedCategory!: Category;
 
@@ -20,6 +26,9 @@ export class CategoriesListComponent implements OnInit {
         private router: Router,
         private ms: MessageService
     ) {}
+    ngOnDestroy(): void {
+        this.endSubs();
+    }
 
     ngOnInit(): void {
         this._getCategories();
@@ -31,23 +40,26 @@ export class CategoriesListComponent implements OnInit {
         this.display = !this.display;
     }
 
-    onDeleteCategory(id: string) {
-        this.cs.deleteCategory(id).subscribe(
-            () => {
-                this.ms.add({
-                    severity: 'success',
-                    summary: 'Success',
-                    detail: 'Category was deleted'
-                });
-            },
-            (error) => {
-                this.ms.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: 'Category was deleted'
-                });
-            }
-        );
+    onDeleteCategory(id?: string) {
+        this.cs
+            .deleteCategory(id as string)
+            .pipe(takeUntil(this.endSubs$))
+            .subscribe(
+                () => {
+                    this.ms.add({
+                        severity: 'success',
+                        summary: 'Success',
+                        detail: 'Category was deleted'
+                    });
+                },
+                (error) => {
+                    this.ms.add({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: 'Category was deleted'
+                    });
+                }
+            );
         this._getCategories();
         this.toggleDialog();
     }
@@ -57,6 +69,10 @@ export class CategoriesListComponent implements OnInit {
     }
 
     private _getCategories() {
-        this.categories$ = this.cs.getCategories() as Observable<Category[]>;
+        this.categories$ = this.cs.getCategories();
+    }
+    private endSubs() {
+        this.endSubs$.next();
+        // console.log('Categories list subs destroyed');
     }
 }

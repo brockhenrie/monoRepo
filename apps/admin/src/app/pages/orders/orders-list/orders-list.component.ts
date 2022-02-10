@@ -1,21 +1,21 @@
 import { MessageService } from 'primeng/api';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, tap } from 'rxjs';
-import { Order, ORDER_STATUS } from '@b-henrie-dev/orders';
+import { Observable, Subject, takeUntil, tap } from 'rxjs';
+import { Order, OrderStatus, ORDER_STATUS } from '@b-henrie-dev/orders';
 import { OrdersService } from 'libs/orders/src/lib/services/orders.service';
 
 @Component({
-  selector: 'admin-orders-list',
-  templateUrl: './orders-list.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'admin-orders-list',
+    templateUrl: './orders-list.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OrdersListComponent implements OnInit {
-
-  orders$: Observable<Order[]>;
+export class OrdersListComponent implements OnInit, OnDestroy {
+    orders$!: Observable<Order[]>;
+    private endSubs$ = new Subject<void>();
 
     selectedOrder!: Order;
-    orderStatus = ORDER_STATUS;
+    orderStatus= ORDER_STATUS;
 
     constructor(
         private os: OrdersService,
@@ -27,14 +27,19 @@ export class OrdersListComponent implements OnInit {
         this._getOrders();
     }
 
+    ngOnDestroy(): void {
+        this.endSubs();
+    }
+
     display: boolean = false;
     toggleDialog(order?: Order) {
-        this.selectedOrder = order;
+        this.selectedOrder = order as Order;
         this.display = !this.display;
     }
 
-    onDeleteOrder(id: string) {
-        this.os.deleteOrder(id).subscribe(
+    onDeleteOrder(id?: string) {
+      if(!id) return;
+        this.os.deleteOrder(id).pipe(takeUntil(this.endSubs$)).subscribe(
             () => {
                 this.ms.add({
                     severity: 'success',
@@ -59,6 +64,28 @@ export class OrdersListComponent implements OnInit {
     }
 
     private _getOrders() {
-        this.orders$ = this.os.getOrders() as Observable<Order[]>;
+        this.orders$ = this.os.getOrders();
     }
+
+    private endSubs() {
+        this.endSubs$.next();
+        // console.log('Orders list subs destroyed');
+    }
+
+    getOrderStatus(num: number){
+      const status = this.mapOrderStatus()
+      return status[num]
+    }
+
+    private mapOrderStatus() {
+      return Object.keys(this.orderStatus).map(
+        (_value, index, orderStatuses) => {
+          return {
+            value: index,
+            label: orderStatuses[index],
+            color: orderStatuses[index]
+          };
+        }
+      ) as unknown as OrderStatus[];
+  }
 }

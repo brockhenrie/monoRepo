@@ -59,7 +59,7 @@
         </div>
 
         <div class="grid">
-            <div class="col-12">
+            <div class="col-12" *ngIf="products$ | async as products">
                 <p-table
                     styleClass="p-datatable-gridlines"
                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
@@ -67,7 +67,7 @@
                     [paginator]="true"
                     [rows]="5"
                     [showCurrentPageReport]="true"
-                    [value]="products$ | async"
+                    [value]="products"
                     responsiveLayout="scroll"
                 >
                     <ng-template pTemplate="header">

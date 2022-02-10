@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, of, shareReplay, tap } from 'rxjs';
+import { Observable, catchError, of, shareReplay } from 'rxjs';
 import { User } from '../models/user.model';
 @Injectable()
 export class UsersService {
@@ -49,9 +49,7 @@ export class UsersService {
     }
 
     getTotalUsers():Observable<number>{
-      return this.http.get<number>(this.apiUrl+'get/count').pipe(
-        tap(res=>console.log(res))
-      )
+      return this.http.get<number>(this.apiUrl+'get/count')
     }
 
 

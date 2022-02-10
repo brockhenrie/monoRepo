@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 /* eslint-disable @typescript-eslint/no-empty-function */
 
@@ -14,7 +15,7 @@ import { UsersService } from '@b-henrie-dev/users';
 export class DashboardComponent implements OnInit {
 
   userCount$ = this.us.getTotalUsers();
-  totalProducts$ = this.ps.getTotalProducts();
+  totalProducts$: Observable<unknown[]> = this.ps.getTotalProducts();
   totalSales$ = this.os.getTotalSales();
   orderCount$ = this.os.getOrderCount();
 
@@ -27,4 +28,8 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  transformTotal(totalSales: any){
+    let total = {...totalSales};
+    return total[0].totalsales
+  }
 }

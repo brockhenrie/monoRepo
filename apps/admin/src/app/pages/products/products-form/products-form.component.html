@@ -20,7 +20,7 @@
                             label="Create"
                             icon="pi pi-plus"
                             (onClick)="onCreateProduct()"
-                            [disabled]="productForm.invalid"
+                            [disabled]="productF.invalid"
                         ></p-button>
                         <p-button
                             *ngIf="editMode"
@@ -28,7 +28,7 @@
                             label="Update"
                             icon="pi pi-pencil"
                             (onClick)="onUpdateProduct()"
-                            [disabled]="productForm.invalid"
+                            [disabled]="productF.invalid"
                         ></p-button>
                         <p-button
                             styleClass="p-button-secondary "
