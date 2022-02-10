@@ -15,8 +15,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     private endSubs$ = new Subject<void>();
 
     selectedOrder!: Order;
-    orderStatus= ORDER_STATUS;
-
+    orderStatus= ORDER_STATUS as unknown as OrderStatus[];
+    status = this.mapOrderStatus()
     constructor(
         private os: OrdersService,
         private router: Router,
@@ -73,18 +73,19 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     }
 
     getOrderStatus(num: number){
-      const status = this.mapOrderStatus()
-      return status[num]
+
+      return this.status[num]
     }
 
     private mapOrderStatus() {
-      return Object.keys(this.orderStatus).map(
-        (_value, index, orderStatuses) => {
-          return {
+      return Object.keys(ORDER_STATUS).map(
+        (value, index) => {
+          const status = {
             value: index,
-            label: orderStatuses[index],
-            color: orderStatuses[index]
+            label: this.orderStatus[index].label,
+            color:  this.orderStatus[index].color
           };
+          return status
         }
       ) as unknown as OrderStatus[];
   }
