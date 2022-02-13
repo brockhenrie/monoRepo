@@ -19,19 +19,23 @@
             ]
           }
         ],
-        "no-empty-function": "off",
-        "@typescript-eslint/no-empty-function": "off"
+        "no-empty-function": "off"
+
       }
     },
     {
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@nrwl/nx/typescript"],
-      "rules": {}
+      "rules": {
+        "no-empty-function": "off"
+      }
     },
     {
       "files": ["*.js", "*.jsx"],
       "extends": ["plugin:@nrwl/nx/javascript"],
-      "rules": {}
+      "rules": {
+        "comma-dangle":"off"
+      }
     }
   ]
 }

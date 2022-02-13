@@ -1,0 +1,20 @@
+.product-page {
+    .spinner {
+        @keyframes p-progress-spinner-color {
+            100%,
+            0% {
+                stroke: #000766;
+            }
+            40% {
+                stroke: #0057e7;
+            }
+            66% {
+                stroke: #0eeb7c;
+            }
+            80%,
+            90% {
+                stroke: #00e1ff;
+            }
+        }
+    }
+}

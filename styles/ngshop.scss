@@ -15,13 +15,23 @@
 
 //pages
 @import './apps/shop/pages/home-page.scss';
-@import './apps/shop/pages/products-list-page.scss';
+@import './apps/shop/pages/products-page.scss';
 
 //shared
 @import './apps/shop/shared/footer.scss';
 @import './apps/shop/shared/header.scss';
+@import './apps/shop/shared/nav.scss';
 
 //libs
 @import './libs/ui/ui.scss';
-@import './libs/products/products.scss'
+@import './libs/products/products.scss';
+@import '~animate.css/animate.css';
 
+
+.container{
+  width: 1200px;
+  padding: 15px;
+  margin: 0 auto;
+  background: var(--surface-100);
+
+}

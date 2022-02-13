@@ -1,0 +1,11 @@
+<div class="product-page" >
+  <div *ngIf="product$ |async as product">
+
+    {{ product | json}}
+
+  </div>
+  <div *ngIf="isLoading" >
+    <p-progressSpinner class="spinner"></p-progressSpinner>
+  </div>
+
+</div>

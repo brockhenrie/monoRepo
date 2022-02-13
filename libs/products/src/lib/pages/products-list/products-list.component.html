@@ -1,0 +1,18 @@
+<div class="products-list" *ngIf="categories$ | async as categories">
+<div class="grid">
+  <div *ngIf="!isCategoriesPage" >
+    {{selectedCats}}
+  <products-categories-list (selectedCategory)="selectedCategories($event)"  [categories]="categories"></products-categories-list>
+  </div >
+  <div [ngClass]=" {'col-9': !isCategoriesPage, 'col-12':isCategoriesPage}">
+
+    <div class="grid">
+      <div [ngClass]=" {'col-4 product-item': !isCategoriesPage, 'col-3 product-item':isCategoriesPage}" *ngFor="let product of products$| async">
+        <products-product-item [product]="product"></products-product-item>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+

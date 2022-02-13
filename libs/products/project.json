@@ -2,7 +2,7 @@
     "projectType": "library",
     "root": "libs/products",
     "sourceRoot": "libs/products/src",
-    "prefix": "b-henrie-dev",
+    "prefix": "products",
     "targets": {
         "test": {
             "executor": "@nrwl/jest:jest",

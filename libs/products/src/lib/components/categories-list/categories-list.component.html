@@ -1,0 +1,25 @@
+<div class="categories-list">
+  <div class="grid">
+    <div class="col-6">
+      <h4>Categories</h4>
+    </div>
+    <div class="col-6">
+      <p-button  styleClass="mt-2 button" label="Filter" (onClick)="onFilter()"></p-button>
+    </div>
+  </div>
+
+
+    <div class="field-checkbox" *ngFor="let category of categories">
+      <p-checkbox
+      [binary]="true"
+      inputId="{{category.id}}"
+      class="checkbox"
+      name="categories"
+      value="{{category.id}}"
+      label="{{ category.name }}"
+      [(ngModel)]="category.checked"
+      (onChange)="categoryFilter()"
+  ></p-checkbox>
+    </div>
+
+</div>
