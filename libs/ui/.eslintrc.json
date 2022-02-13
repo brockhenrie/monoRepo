@@ -9,13 +9,17 @@
                 "plugin:@angular-eslint/template/process-inline-templates"
             ],
             "rules": {
+              "no-empty-function": "off",
+              "@typescript-eslint/no-empty-function": ["error"],
+              "no-empty-lifecycle-method": "off",
                 "@angular-eslint/directive-selector": [
                     "error",
                     {
                         "type": "attribute",
                         "prefix": "ui",
                         "style": "camelCase"
-                    }
+                    },
+                    ""
                 ],
                 "@angular-eslint/component-selector": [
                     "error",
@@ -30,7 +34,10 @@
         {
             "files": ["*.html"],
             "extends": ["plugin:@nrwl/nx/angular-template"],
-            "rules": {}
+            "rules": {
+              "no-empty-function": "off",
+              "no-empty-lifecycle-method": "off"
+            }
         }
     ]
 }

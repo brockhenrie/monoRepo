@@ -1,3 +1,5 @@
+import { UiModule } from '@b-henrie-dev/ui';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -11,6 +13,8 @@ import { ProductsListComponent } from './pages/products-list/products-list.compo
 import { CategoriesListComponent } from './components/categories-list/categories-list.component';
 import {CheckboxModule} from 'primeng/checkbox';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {RatingModule} from 'primeng/rating';
+import {InputNumberModule} from 'primeng/inputnumber';
 
 import { ProductPageComponent } from './pages/product-page/product-page.component';
 
@@ -27,7 +31,11 @@ const ROUTES: Routes = [
         FormsModule,
         RouterModule.forChild(ROUTES),
         CheckboxModule,
-        ProgressSpinnerModule
+        ProgressSpinnerModule,
+        BrowserAnimationsModule,
+        RatingModule,
+        InputNumberModule,
+        UiModule
     ],
 
     declarations: [
