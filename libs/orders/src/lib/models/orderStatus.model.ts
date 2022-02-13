@@ -4,7 +4,7 @@ export const ORDER_STATUS= {
     color:'primary',
     value:0
   },
-  1: {
+  1:{
     label:'Processed',
     color:'warning',
     value:1

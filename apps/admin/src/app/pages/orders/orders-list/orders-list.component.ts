@@ -84,8 +84,6 @@ export class OrdersListComponent implements OnInit, OnDestroy {
             value: index,
             label: this.orderStatus[index].label,
             color: this.orderStatus[index].color
-          };
-        }
-      ) as unknown as OrderStatus[];
-  }
+        } as unknown as OrderStatus[];
+  })}
 }

@@ -25,10 +25,10 @@ import { MessageService } from 'primeng/api';
 export class OrdersDetailsComponent implements OnInit {
     private endSubs$ = new Subject<void>();
 
-    orderStatuses = ORDER_STATUS;
+    orderStatuses = ORDER_STATUS as unknown as OrderStatus[];
     selectedStatus!: number;
     activeOrder!: Order;
-    statuses!:OrderStatus[];
+    statuses = this.mapOrderStatus();
     constructor(
         private os: OrdersService,
         private messageService: MessageService,
@@ -88,17 +88,23 @@ export class OrdersDetailsComponent implements OnInit {
                 }
             });
     }
-    private mapOrderStatus() {
-        return Object.keys(this.orderStatuses).map(
-          (_value, index, orderStatuses) => {
-            return {
-              value: index,
-              label: orderStatuses[index],
-              color: orderStatuses[index]
-            };
-          }
-        ) as unknown as OrderStatus[];
+    getOrderStatus(num: number){
+
+      return this.statuses[num]
     }
+
+    private mapOrderStatus() {
+      return Object.keys(ORDER_STATUS).map(
+        (value, index) => {
+          const status = {
+            value: index,
+            label: this.orderStatuses[index].label,
+            color:  this.orderStatuses[index].color
+          };
+          return status
+        }
+      ) as unknown as OrderStatus[];
+  }
 
     getTotal(num?: number, num2?:number) {
         if (num && num2) {
