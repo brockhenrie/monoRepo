@@ -2,15 +2,9 @@
   <div class="main-image">
     <img [src]="selectedImage" alt="">
   </div>
-  <div class="main-image">
-    <ul>
-      <li [ngStyle]="{'background-image': 'url(image)'}" alt="">
-    </ul>
-
-  </div>
   <div class="images">
     <ul>
-      <li  *ngFor= "let image of images" >
+      <li (click)="onChangeSelected(image)" *ngFor= "let image of images" [ngStyle]="{'background-image': 'url('+image+')'}">
 
         <img [src]="image" alt="" class="">
 

@@ -1,3 +1,5 @@
+
+import { MessageModule } from 'primeng/message';
 import { UiModule } from '@b-henrie-dev/ui';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
@@ -35,7 +37,8 @@ const ROUTES: Routes = [
         BrowserAnimationsModule,
         RatingModule,
         InputNumberModule,
-        UiModule
+        UiModule,
+        MessageModule
     ],
 
     declarations: [
@@ -55,6 +58,7 @@ const ROUTES: Routes = [
         ProductsListComponent,
         CategoriesListComponent,
         ProductPageComponent
-    ]
+    ],
+
 })
 export class ProductsModule {}

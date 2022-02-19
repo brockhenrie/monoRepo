@@ -1,3 +1,6 @@
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { OrdersModule } from '@b-henrie-dev/orders';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -13,6 +16,7 @@ import {AccordionModule} from 'primeng/accordion';
 import { NavComponent } from './shared/nav/nav.component';
 import {CategoriesService, ProductsModule} from '@b-henrie-dev/products'
 import { HttpClientModule } from '@angular/common/http';
+import { MessgaesComponent } from './shared/messgaes/messgaes.component';
 
 
 const ROUTES: Routes= [
@@ -20,7 +24,7 @@ const ROUTES: Routes= [
   {path:'home', component: HomePageComponent},
 ]
 @NgModule({
-  declarations: [AppComponent, HomePageComponent, HeaderComponent, FooterComponent, NavComponent,],
+  declarations: [AppComponent, HomePageComponent, HeaderComponent, FooterComponent, NavComponent, MessgaesComponent,],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -29,10 +33,11 @@ const ROUTES: Routes= [
     UiModule,
     AccordionModule,
     ProductsModule,
-    UiModule
+    OrdersModule,
+    ToastModule
 
   ],
-  providers: [CategoriesService],
+  providers: [CategoriesService, MessageService],
   bootstrap: [AppComponent],
   exports: [
 

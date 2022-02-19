@@ -13,7 +13,7 @@
                     "error",
                     {
                         "type": "attribute",
-                        "prefix": "bHenrieDev",
+                        "prefix": "orders",
                         "style": "camelCase"
                     }
                 ],
@@ -21,7 +21,7 @@
                     "error",
                     {
                         "type": "element",
-                        "prefix": "b-henrie-dev",
+                        "prefix": "orders",
                         "style": "kebab-case"
                     }
                 ]

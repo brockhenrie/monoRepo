@@ -2,7 +2,7 @@
   <div *ngIf="product$ |async as product">
     <div class="grid">
       <div class="col-6">
-        <ui-gallery *ngIf="product.image" [image]="product.image"></ui-gallery>
+        <ui-gallery *ngIf="product.image" [image]="product.image" [images]="product.images"></ui-gallery>
       </div>
       <div class="col-6 product">
         <h2 class="product-name">{{product.name}}</h2>
@@ -25,7 +25,7 @@
         <div class="product-action">
           <button pButton pRipple type="button" label="Buy Now" class="p-button-rounded mr-2"></button>
           <button *ngIf="product.id" pButton pRipple type="button" label="Add to Cart" class="p-button-rounded mr-2"
-            (onClick)="addProductToCart(product.id)"></button>
+            (click)="addProductToCart(product.id)"></button>
         </div>
 
 

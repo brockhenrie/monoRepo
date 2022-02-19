@@ -6,9 +6,6 @@
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
-        "prettier/prettier": "error",
-        "no-empty-function": "off",
-        "no-empty-lifecycle-method": "off",
         "@nrwl/nx/enforce-module-boundaries": [
           "error",
 
@@ -30,19 +27,13 @@
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@nrwl/nx/typescript"],
       "rules": {
-        "no-empty-function": "off",
-        "no-empty-lifecycle-method": "off",
-
-
       }
     },
     {
       "files": ["*.js", "*.jsx"],
       "extends": ["plugin:@nrwl/nx/javascript"],
       "rules": {
-        "comma-dangle":"off",
-        "no-empty-function": "off",
-        "no-empty-lifecycle-method": "off"
+        "comma-dangle":"off"
       }
     }
   ]

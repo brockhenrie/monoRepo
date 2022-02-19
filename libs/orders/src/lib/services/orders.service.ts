@@ -11,6 +11,7 @@ import { Order } from '../models/order.model';
 })
 export class OrdersService {
   private apiUrl = environment.ordersApiUrl;
+  private apiProductsUrl = environment.productsApiUrl;
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -63,4 +64,14 @@ export class OrdersService {
 
       return of(errorOrder);
   }
+
+  getProduct(id: string): Observable<any> {
+    return this.http.get<any>(this.apiProductsUrl + id).pipe(
+        catchError((err) => {
+            console.log(JSON.stringify(err));
+            return [];
+        }),
+        shareReplay(1)
+    );
+}
 }
