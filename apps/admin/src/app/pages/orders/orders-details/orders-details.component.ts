@@ -37,7 +37,6 @@ export class OrdersDetailsComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-       this.statuses = this.mapOrderStatus();
         this._populateOrder();
     }
     ngOnDestroy(): void {
@@ -90,7 +89,7 @@ export class OrdersDetailsComponent implements OnInit {
     }
     getOrderStatus(num: number){
 
-      return this.statuses[num]
+      return this.orderStatuses[num]
     }
 
     private mapOrderStatus() {

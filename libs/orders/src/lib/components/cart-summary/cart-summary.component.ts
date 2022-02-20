@@ -12,7 +12,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 export class CartSummaryComponent implements OnInit, OnDestroy {
     totalPrice = 0;
     endSubs$ = new Subject<void>();
-    constructor(private cs: CartService, private os: OrdersService, private router:Router) {}
+    isCheckout = false;
+    constructor(private cs: CartService, private os: OrdersService, private router:Router) {
+      this.router.url.includes('checkout') ? this.isCheckout = true : this.isCheckout = false;
+    }
 
     ngOnDestroy(): void {
         this.endSubs$.next();

@@ -36,7 +36,7 @@ export class OrdersService {
   createOrder(Order:Order) {
     console.log(Order)
       return this.http
-          .post<Order>(this.apiUrl+'register', Order)
+          .post<Order>(this.apiUrl, Order)
           .pipe(catchError((err) => this.errorHandler(err)));
   }
   deleteOrder(id: string): Observable<Order> {
