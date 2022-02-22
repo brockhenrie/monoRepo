@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
     CategoriesService,
     Category,
-    Product,
     ProductsService
 } from '@b-henrie-dev/products';
 import { MessageService } from 'primeng/api';
@@ -51,7 +50,9 @@ export class ProductsFormComponent implements OnInit, OnDestroy{
                 console.log(res);
                 this.location.back();
             },
-            (err) => {}
+            (err) => {
+              console.log(err);
+            }
         );
         this.messageService.add({
             severity: 'success',
@@ -69,7 +70,9 @@ export class ProductsFormComponent implements OnInit, OnDestroy{
                 console.log(res);
                 this.location.back();
             },
-            (err) => {}
+            (err) => {
+              console.log(err)
+            }
         );
         this.messageService.add({
             severity: 'success',
@@ -83,6 +86,7 @@ export class ProductsFormComponent implements OnInit, OnDestroy{
         this.location.back();
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onImageUpload(event:any) {
         const file = event.target.files[0];
         if (file) {

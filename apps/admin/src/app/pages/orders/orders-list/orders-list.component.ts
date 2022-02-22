@@ -1,9 +1,8 @@
 import { MessageService } from 'primeng/api';
 import { ChangeDetectionStrategy, Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Subject, takeUntil, tap } from 'rxjs';
-import { Order, OrderStatus, ORDER_STATUS } from '@b-henrie-dev/orders';
-import { OrdersService } from 'libs/orders/src/lib/services/orders.service';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { Order, OrdersService, OrderStatus, ORDER_STATUS } from '@b-henrie-dev/orders';
 
 @Component({
     selector: 'admin-orders-list',
@@ -16,6 +15,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
 
     selectedOrder!: Order;
     orderStatus= ORDER_STATUS as unknown as OrderStatus[];
+    display = false;
 
     constructor(
         private os: OrdersService,
@@ -31,7 +31,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         this.endSubs();
     }
 
-    display: boolean = false;
+
     toggleDialog(order?: Order) {
         this.selectedOrder = order as Order;
         this.display = !this.display;
@@ -51,7 +51,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
                 this.ms.add({
                     severity: 'error',
                     summary: 'Error',
-                    detail: "User wasn't deleted"
+                    detail: `${JSON.stringify(error)}`
                 });
             }
         );

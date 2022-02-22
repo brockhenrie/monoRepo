@@ -1,4 +1,3 @@
-import { User } from "@b-henrie-dev/users";
 import { OrderItem } from "./orderItem.model";
 
 export class Order {
@@ -13,6 +12,7 @@ export class Order {
   phone?:string;
   status?:number;
   totalPrice?:string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   user?:any;
   dateOrdered?:string;
 

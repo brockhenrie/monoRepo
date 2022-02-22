@@ -1,6 +1,5 @@
 import { MessageService } from 'primeng/api';
-import { Category } from '../../../../../../../libs/products/src/lib/models/category.model';
-import { CategoriesService } from '../../../../../../../libs/products/src/lib/services/categories.service';
+import { Category,CategoriesService } from '@b-henrie-dev/products';
 import {
     ChangeDetectionStrategy,
     Component,
@@ -20,6 +19,7 @@ export class CategoriesListComponent implements OnInit, OnDestroy {
     private endSubs$ = new Subject<void>();
 
     selectedCategory!: Category;
+    display = false;
 
     constructor(
         private cs: CategoriesService,
@@ -34,7 +34,7 @@ export class CategoriesListComponent implements OnInit, OnDestroy {
         this._getCategories();
     }
 
-    display: boolean = false;
+
     toggleDialog(category?: Category) {
         this.selectedCategory = category as Category;
         this.display = !this.display;
@@ -56,7 +56,7 @@ export class CategoriesListComponent implements OnInit, OnDestroy {
                     this.ms.add({
                         severity: 'error',
                         summary: 'Error',
-                        detail: 'Category was deleted'
+                        detail: `${JSON.stringify(error)}`
                     });
                 }
             );

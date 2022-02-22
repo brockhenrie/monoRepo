@@ -1,13 +1,9 @@
 import {
-    BehaviorSubject,
-    catchError,
-    Observable,
     Subject,
-    Subscription,
     takeUntil
 } from 'rxjs';
 import { Location } from '@angular/common';
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
     Order,
@@ -18,11 +14,11 @@ import {
 import { MessageService } from 'primeng/api';
 
 @Component({
-    selector: 'orders-details',
+    selector: 'admin-orders-details',
     templateUrl: './orders-details.component.html',
     changeDetection: ChangeDetectionStrategy.Default
 })
-export class OrdersDetailsComponent implements OnInit {
+export class OrdersDetailsComponent implements OnInit, OnDestroy {
     private endSubs$ = new Subject<void>();
 
     orderStatuses = ORDER_STATUS as unknown as OrderStatus[];
@@ -47,9 +43,9 @@ export class OrdersDetailsComponent implements OnInit {
         this.location.back();
     }
 
-    onStatusChange(event: any) {
+    onStatusChange(event:{value:string}) {
         this.os
-            .updateOrder({ status: event.value }, this.activeOrder.id as string)
+            .updateOrder({ status: event.value }, this.activeOrder?.id as string)
             .pipe(takeUntil(this.endSubs$))
             .subscribe(
                 () => {

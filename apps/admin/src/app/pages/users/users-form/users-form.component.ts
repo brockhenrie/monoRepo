@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { FormBuilder, Validators, FormGroup, MinLengthValidator } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
@@ -7,7 +7,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { countries, states, User, UsersService } from '@b-henrie-dev/users';
 
 @Component({
-    selector: 'users-form',
+    selector: 'admin-users-form',
     templateUrl: './users-form.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -89,8 +89,8 @@ export class UsersFormComponent implements OnInit, OnDestroy{
                     this.userForm['phone'].setValue(user.phone),
                     this.userForm['password'].setValue(user.password);
                     this.userForm['isAdmin'].setValue(user.isAdmin);
-                    this.userForm['address'].setValue(user.address);
-                    this.userForm['address2'].setValue(user.address2);
+                    this.userForm['address'].setValue(user.shippingAddress1);
+                    this.userForm['address2'].setValue(user.shippingAddress2);
                     this.userForm['city'].setValue(user.city);
                     this.userForm['state'].setValue(user.state);
                     this.userForm['city'].setValue(user.city);
@@ -126,8 +126,8 @@ export class UsersFormComponent implements OnInit, OnDestroy{
       this.newUser.id= this.userForm['id'].value;
       this.newUser.phone=this.userForm['phone'].value;
       this.newUser.isAdmin=this.userForm['isAdmin'].value;
-      this.newUser.address=this.userForm['address'].value;
-      this.newUser.address2= this.userForm['address2'].value;
+      this.newUser.shippingAddress1=this.userForm['address'].value;
+      this.newUser.shippingAddress2= this.userForm['address2'].value;
       this.newUser.city=this.userForm['city'].value;
       this.newUser.state=this.userForm['state'].value;
       this.newUser.zip= this.userForm['zip'].value;

@@ -5,7 +5,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { User, UsersService } from '@b-henrie-dev/users';
 
 @Component({
-    selector: 'users-list',
+    selector: 'admin-users-list',
     templateUrl: './users-list.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -14,7 +14,7 @@ export class UsersListComponent implements OnInit, OnDestroy {
     private endSubs$ = new Subject<void>();
 
     selectedUser!: User;
-
+    display = false;
     constructor(
         private us: UsersService,
         private router: Router,
@@ -28,7 +28,7 @@ export class UsersListComponent implements OnInit, OnDestroy {
       this.endSubs();
   }
 
-    display: boolean = false;
+
     toggleDialog(user?: User) {
         this.selectedUser = user as User;
         this.display = !this.display;
@@ -50,7 +50,7 @@ export class UsersListComponent implements OnInit, OnDestroy {
                 this.ms.add({
                     severity: 'error',
                     summary: 'Error',
-                    detail: "User wasn't deleted"
+                    detail: `${JSON.stringify(error)}`
                 });
             }
         );

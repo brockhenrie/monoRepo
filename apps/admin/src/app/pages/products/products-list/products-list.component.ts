@@ -1,9 +1,8 @@
-import { Product } from './../../../../../../../libs/products/src/lib/models/product.model';
+import { Product,ProductsService } from '@b-henrie-dev/products';
 import { MessageService } from 'primeng/api';
 import { ChangeDetectionStrategy, Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { ProductsService } from 'libs/products/src/lib/services/products.service';
 
 @Component({
     selector: 'admin-products-list',
@@ -15,7 +14,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
 
     selectedProduct!: Product;
     private endSubs$ = new Subject<void>();
-
+    display= false;
     constructor(
         private ps: ProductsService,
         private router: Router,
@@ -30,7 +29,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
       this.endSubs();
   }
 
-    display: boolean = false;
+
     toggleDialog(product?: Product) {
         this.selectedProduct = product as Product;
         this.display = !this.display;
@@ -49,7 +48,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
                 this.ms.add({
                     severity: 'error',
                     summary: 'Error',
-                    detail: "Product wasn't deleted"
+                    detail: `${JSON.stringify(error)}`
                 });
             }
         );

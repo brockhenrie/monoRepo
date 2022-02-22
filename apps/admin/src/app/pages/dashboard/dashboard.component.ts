@@ -28,8 +28,8 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  transformTotal(totalSales: any){
-    let total = {...totalSales};
+  transformTotal(totalSales:{totalsales:number}[]){
+    const total = {...totalSales};
     return total[0].totalsales
   }
 }

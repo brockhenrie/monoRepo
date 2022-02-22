@@ -1,18 +1,15 @@
 import { AppRoutingModule } from './app-routing.module';
-import { JwtInterceptor } from '@b-henrie-dev/users';
-import { LocalstorageService } from './../../../../libs/users/src/lib/services/localstorage.service';
-import { OrdersService } from './../../../../libs/orders/src/lib/services/orders.service';
-import { ProductsService } from './../../../../libs/products/src/lib/services/products.service';
+import { LocalstorageService } from '@b-henrie-dev/users';
+import { OrdersService } from '@b-henrie-dev/orders';
+import { ProductsService, CategoriesService } from '@b-henrie-dev/products';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MessageService } from 'primeng/api';
-import { CategoriesService } from './../../../../libs/products/src/lib/services/categories.service';
 import { UiModule } from '@b-henrie-dev/ui';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ShellComponent } from './shared/shell/shell.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
@@ -21,7 +18,7 @@ import { ProductsListComponent } from './pages/products/products-list/products-l
 import { ProductsFormComponent } from './pages/products/products-form/products-form.component';
 import { UsersFormComponent } from './pages/users/users-form/users-form.component';
 import { UsersListComponent } from './pages/users/users-list/users-list.component';
-import { AuthGuard, IsAdminGuard, UsersModule, UsersService,AuthService } from '@b-henrie-dev/users';
+import { UsersModule, UsersService, AuthService } from '@b-henrie-dev/users';
 import { OrdersListComponent } from './pages/orders/orders-list/orders-list.component';
 import { OrdersDetailsComponent } from './pages/orders/orders-details/orders-details.component';
 
@@ -43,8 +40,11 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { EditorModule } from 'primeng/editor';
 import { TagModule } from 'primeng/tag';
-import {InputMaskModule} from 'primeng/inputmask';
-import {FieldsetModule} from 'primeng/fieldset';
+import { InputMaskModule } from 'primeng/inputmask';
+import { FieldsetModule } from 'primeng/fieldset';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { NgxStripeModule } from 'ngx-stripe';
 
 const UX_MODULE = [
     CardModule,
@@ -67,8 +67,6 @@ const UX_MODULE = [
     FieldsetModule
 ];
 
-
-
 @NgModule({
     declarations: [
         AppComponent,
@@ -88,6 +86,11 @@ const UX_MODULE = [
         BrowserModule,
         BrowserAnimationsModule,
         AppRoutingModule,
+        StoreModule.forRoot({}),
+        EffectsModule.forRoot([]),
+        NgxStripeModule.forRoot(
+            'pk_test_51KVk8kKj3kdwtQkGoj4KZenithV1Argo7SAf9s3JYOTzV3MTN0capJigAGPJ6yVuyYm4l0gO7mfLP1rTlNe7C100maxiQKg8'
+        ),
         UiModule,
         HttpClientModule,
         FormsModule,
@@ -102,9 +105,7 @@ const UX_MODULE = [
         UsersService,
         OrdersService,
         AuthService,
-        LocalstorageService,
-
-
+        LocalstorageService
     ],
     bootstrap: [AppComponent]
 })

@@ -1,3 +1,4 @@
+import { UsersFacade } from './../state/users.facade';
 import { environment } from '@env/environment';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Router } from '@angular/router';
@@ -10,7 +11,11 @@ import { User } from '../models/user.model';
 export class UsersService {
     private apiUrl = environment.usersApiUrl;
 
-    constructor(private http: HttpClient, private router: Router) {}
+    constructor(
+        private http: HttpClient,
+        private router: Router,
+        private usersFacade: UsersFacade
+    ) {}
 
     getUsers(): Observable<User[]> {
         return this.http.get<User[]>(this.apiUrl).pipe(
@@ -30,10 +35,10 @@ export class UsersService {
             shareReplay(1)
         );
     }
-    createUser(user:User) {
-      console.log(user)
+    createUser(user: User) {
+        console.log(user);
         return this.http
-            .post<User>(this.apiUrl+'register', user)
+            .post<User>(this.apiUrl + 'register', user)
             .pipe(catchError((err) => this.errorHandler(err)));
     }
     deleteUser(id: string): Observable<User> {
@@ -48,11 +53,21 @@ export class UsersService {
             .pipe(catchError((err) => this.errorHandler(err)));
     }
 
-    getTotalUsers():Observable<number>{
-      return this.http.get<number>(this.apiUrl+'get/count')
+    getTotalUsers(): Observable<number> {
+        return this.http.get<number>(this.apiUrl + 'get/count');
     }
 
+    initAppSession() {
+        this.usersFacade.buildUserSession();
+    }
 
+    observeCurrentUser(){
+      return this.usersFacade.currentUser$;
+    }
+
+    isCurrentUserAuth(){
+      return this.usersFacade.isAuth$;
+    }
 
     private errorHandler(err: any) {
         const errorUser: User = {};

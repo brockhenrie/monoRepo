@@ -17,7 +17,7 @@ export class CartIconComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
    this.cs.cart$.pipe(takeUntil(this.unSub$)).subscribe(cart=>{
-      this.cartCount = cart?.items.length as unknown as string ?? 0;
+      this.cartCount = cart.items.length.toLocaleString() ?? '0';
     });
   }
 

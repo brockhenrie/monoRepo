@@ -1,7 +1,6 @@
-import { Category } from '../../../../../../../libs/products/src/lib/models/category.model';
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { CategoriesService } from '@b-henrie-dev/products';
+import { CategoriesService, Category } from '@b-henrie-dev/products';
 import { MessageService } from 'primeng/api';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';

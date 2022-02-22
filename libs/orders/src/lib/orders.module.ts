@@ -13,11 +13,14 @@ import { BadgeModule } from 'primeng/badge';
 import { CartPageComponent } from './pages/cart-page/cart-page.component';
 import { CartSummaryComponent } from './components/cart-summary/cart-summary.component';
 import { CheckoutPageComponent } from './pages/checkout-page/checkout-page.component';
+import { AuthGuard } from '@b-henrie-dev/users';
+import { ThankyouComponent } from './pages/thankyou/thankyou.component';
 
 
 const ROUTES: Routes = [
   { path: 'cart', component: CartPageComponent },
-  {path:'checkout', component: CheckoutPageComponent}
+  {path:'checkout', component: CheckoutPageComponent, canActivate: [AuthGuard]},
+  {path:'success', component: ThankyouComponent, canActivate: [AuthGuard]}
 ];
 @NgModule({
     imports: [
@@ -32,8 +35,8 @@ const ROUTES: Routes = [
         DropdownModule,
         ReactiveFormsModule
     ],
-    declarations: [CartIconComponent, CartPageComponent, CartSummaryComponent, CheckoutPageComponent],
-    exports: [CartIconComponent, RouterModule, CartSummaryComponent, CheckoutPageComponent]
+    declarations: [CartIconComponent, CartPageComponent, CartSummaryComponent, CheckoutPageComponent, ThankyouComponent],
+    exports: [CartIconComponent, RouterModule, CartSummaryComponent, CheckoutPageComponent, ThankyouComponent]
 })
 export class OrdersModule {
     constructor(cartService: CartService) {

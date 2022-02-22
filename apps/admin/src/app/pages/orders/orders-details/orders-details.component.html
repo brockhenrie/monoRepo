@@ -20,13 +20,13 @@
             <div class="grid">
                 <div class="col-4">
                     <h5 for="id">Order Id</h5>
-                    <p>{{ activeOrder.id }}</p>
+                    <p >{{ activeOrder?.id }}</p>
                 </div>
 
                 <div class="col-4">
                     <h5 for="dateOrdered">Order Date</h5>
                     <p id="dateOrdered" name="dateOrdered">
-                        {{ activeOrder.dateOrdered | date: 'short' }}
+                        {{ activeOrder?.dateOrdered | date: 'short' }}
                     </p>
                 </div>
 
@@ -92,23 +92,23 @@
                 <div class="col-4 ">
                   <h5>Order Address</h5>
                   <p>
-                    {{activeOrder.shippingAddress1}}<br>
-                    {{activeOrder.shippingAddress2}}<br>
-                    {{activeOrder.city }} {{activeOrder.state}}, {{activeOrder.zip}}
-                  </p>ORDER_STATUS['0'].value,
+                    {{activeOrder?.shippingAddress1}}<br>
+                    {{activeOrder?.shippingAddress2}}<br>
+                    {{activeOrder?.city }} {{activeOrder?.state}}, {{activeOrder?.zip}}
+                  </p>
                 </div>
 
                 <div class="col-4 ">
                   <h5>Customer Info</h5>
                   <p *ngIf="activeOrder.user">
-                    {{activeOrder.user.name}}<br>
+                    {{activeOrder?.user.name}}<br>
                   </p>
                 </div>
 
                 <div class="col-4 ">
                   <h5>Customer Phone</h5>
                   <p>
-                    {{activeOrder.phone}}<br>
+                    {{activeOrder?.phone}}<br>
                   </p>
                 </div>
             </div>

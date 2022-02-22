@@ -6,8 +6,8 @@ export class User {
     phone?: string;
     token?: string;
     isAdmin?: boolean;
-    address?: string;
-    address2?: string;
+    shippingAddress1?: string;
+    shippingAddress2?: string;
     city?: string;
     state?: string;
     zip?: string;
